@@ -15,12 +15,12 @@ const getJobListReducer = (state = initialState, action) => {
     case GET_JOBS_LOADER:
       return {
         ...state,
-        isLoading: action.payload,
+        loading: action.payload,
       };
     case GET_JOBS_ERROR:
       return {
         ...state,
-        isError: action.payload,
+        error: action.payload,
       };
 
     default:

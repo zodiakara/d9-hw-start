@@ -26,6 +26,10 @@ export const removeFromFavoritesAction = (Company) => ({
 
 export const getJobsAction = (query) => {
   return async (dispatch) => {
+    dispatch({
+      type: GET_JOBS_LOADER,
+      payload: true,
+    });
     try {
       const response = await fetch(baseEndpoint + query + "&limit=20");
       if (response.ok) {
@@ -35,16 +39,28 @@ export const getJobsAction = (query) => {
           type: GET_JOBS,
           payload: data,
         });
+        dispatch({
+          type: GET_JOBS_LOADER,
+          payload: false,
+        });
       } else {
         dispatch({
           type: GET_JOBS_ERROR,
           payload: true,
+        });
+        dispatch({
+          type: GET_JOBS_LOADER,
+          payload: false,
         });
       }
     } catch (error) {
       dispatch({
         type: GET_JOBS_ERROR,
         payload: true,
+      });
+      dispatch({
+        type: GET_JOBS_LOADER,
+        payload: false,
       });
     }
   };

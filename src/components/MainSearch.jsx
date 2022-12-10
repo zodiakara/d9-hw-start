@@ -1,5 +1,13 @@
 import { useState } from "react";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Form,
+  Button,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
 import Job from "./Job";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,8 +21,8 @@ const MainSearch = () => {
   const navigate = useNavigate();
 
   const jobListFromStore = useSelector((state) => state.list.jobsList);
-
-  // https://strive-benchmark.herokuapp.com/api/jobs?search=developer&limit=20
+  const jobsFetchingError = useSelector((state) => state.list.error);
+  const jobsLoading = useSelector((state) => state.list.loading);
 
   const handleChange = (e) => {
     setQuery(e.target.value);
@@ -44,6 +52,12 @@ const MainSearch = () => {
           </Form>
         </Col>
         <Col xs={10} className="mx-auto mb-5">
+          {jobsFetchingError && (
+            <Alert variant="danger">ERROR FETCHING JOB RESULTS</Alert>
+          )}
+          {jobsLoading && (
+            <Spinner animation="border" variant="info" className="mt-3" />
+          )}
           {jobListFromStore.map((jobData) => (
             <Job key={jobData._id} data={jobData} />
           ))}
